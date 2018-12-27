@@ -1,12 +1,13 @@
 <?php
 /*
 Plugin Name: Minimal Analytics
+Plugin URL:  https://www.javiercasares.com/minimal-analytics/
 Description: A simple Google Analytics snippet (based on David Kuennen minimal-analytics-snippet.js version 2018-12-16 16:49).
 Tags: google analytics, gtagjs, minimal analytics, wpo
-Version: 1.0.0
+Version: 1.0.1
 Requires at least: 4.0
 Tested up to: 5.0.2
-Stable tag: 1.0.0
+Stable tag: trunk
 Author: Javier Casares
 Author URI: https://www.javiercasares.com/
 License: EUPL 1.2
@@ -87,7 +88,6 @@ if ( !class_exists('minimal_analytics_snippet') )
         if ( $ok )
         {
 ?>
-<!-- START -- Minimal Analytics Snippet -->
 <script>
 (function (context, trackingId, options) {
 	const history = context.history;
@@ -158,7 +158,7 @@ if ( !class_exists('minimal_analytics_snippet') )
 	const trackEvent = (category, action, label, value) => track('event', category, action, label, value);
 	const trackException = (description, fatal) => track(typeException, null, null, null, null, description, fatal);
 	history.pushState = function (state) {
-		if (typeof history.onpushstate == "function") {
+		if (typeof history.onpushstate == 'function') {
 			history.onpushstate({ state: state });
 		}
 		setTimeout(track, options.delay || 10);
@@ -169,7 +169,7 @@ if ( !class_exists('minimal_analytics_snippet') )
 		trackEvent,
 		trackException
 	}
-})(window, "<?php echo wp_kses($masjs_ua); ?>", {
+})(window, '<?php echo wp_kses($masjs_ua, array(), array()); ?>', {
 	anonymizeIp: <?php echo $masjs_anonymizeIp; ?>,
 	colorDepth: <?php echo $masjs_colorDepth; ?>,
 	characterSet: <?php echo $masjs_characterSet; ?>,
@@ -177,7 +177,6 @@ if ( !class_exists('minimal_analytics_snippet') )
 	language: <?php echo $masjs_language; ?>
 });
 </script>
-<!-- END -- Minimal Analytics Snippet -->
 <?php
 					unset($ok, $masjs_ua, $masjs_anonymizeIp, $masjs_colorDepth, $masjs_characterSet, $masjs_screenSize, $masjs_language);
 				}
@@ -192,14 +191,19 @@ if ( !class_exists('minimal_analytics_snippet') )
 		add_action( 'admin_menu', 'minimal_analytics_snippet_register_menu');
 		function minimal_analytics_snippet_register_menu()
     {
-      add_options_page(_('Google Analytics', 'minimal-analytics'), _('Minimal Analytics', 'minimal-analytics'), 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_code_show');	
+      add_options_page(__('Google Analytics', 'minimal-analytics'), __('Minimal Analytics', 'minimal-analytics'), 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_admin');	
 		}
 	}
 	function minimal_analytics_snippet_register_meta()
 	{
-    register_setting( 'masjs', 'masjs_ua' );
+    register_setting( 'masjs', 'masjs_ua', array('type' => 'string', 'default' => null) );
+    register_setting( 'masjs', 'masjs_anonymizeIp', array('type' => 'integer', 'default' => 1) );
+    register_setting( 'masjs', 'masjs_colorDepth', array('type' => 'integer', 'default' => 1) );
+    register_setting( 'masjs', 'masjs_characterSet', array('type' => 'integer', 'default' => 1) );
+    register_setting( 'masjs', 'masjs_screenSize', array('type' => 'integer', 'default' => 1) );
+    register_setting( 'masjs', 'masjs_language', array('type' => 'integer', 'default' => 1) );
 	}
-	function minimal_analytics_snippet_code_show()
+	function minimal_analytics_snippet_admin()
 	{
 ?>
 		<div class="wrap">
@@ -209,7 +213,7 @@ if ( !class_exists('minimal_analytics_snippet') )
 <?php
   settings_fields( 'masjs' );
 	$masjs_ua = null;
-	$masjs_ua = wp_kses( get_option( 'masjs_ua' ) );
+	$masjs_ua = wp_kses( get_option( 'masjs_ua' ), array(), array() );
 	$masjs_anonymizeIp = 1;
 	switch(get_option( 'masjs_anonymizeIp' )) {
 		case 0:
@@ -267,24 +271,24 @@ if ( !class_exists('minimal_analytics_snippet') )
             <td scope="row"><input type="text" name="masjs_ua" placeholder="UA-XXXXXX-NN" value="<?php echo $masjs_ua; ?>"></td>
           </tr>
           <tr valign="top">
-            <th scope="row"><?php _e('Anonymize IP', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_anonymizeIp" value="<?php echo $masjs_anonymizeIp; ?>"></td>
+            <th scope="row"><?php _e('Send: Anonymized IP', 'minimal-analytics'); ?></th>
+            <td scope="row"><input type="radio" name="masjs_anonymizeIp" value="1" <?php if($masjs_anonymizeIp) echo 'checked'; ?>> <?php _e('Yes'); ?> <input type="radio" name="masjs_anonymizeIp" value="0" <?php if(!$masjs_anonymizeIp) echo 'checked'; ?>> <?php _e('No'); ?></td>
           </tr>
           <tr valign="top">
-            <th scope="row"><?php _e('Color Depth', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_colorDepth" value="<?php echo $masjs_colorDepth; ?>"></td>
+            <th scope="row"><?php _e('Send: Color Depth', 'minimal-analytics'); ?></th>
+            <td scope="row"><input type="radio" name="masjs_colorDepth" value="1" <?php if($masjs_colorDepth) echo 'checked'; ?>> <?php _e('Yes'); ?> <input type="radio" name="masjs_colorDepth" value="0" <?php if(!$masjs_colorDepth) echo 'checked'; ?>> <?php _e('No'); ?></td>
           </tr>
           <tr valign="top">
-            <th scope="row"><?php _e('Character Set', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_characterSet" value="<?php echo $masjs_characterSet; ?>"></td>
+            <th scope="row"><?php _e('Send: Character Set', 'minimal-analytics'); ?></th>
+            <td scope="row"><input type="radio" name="masjs_characterSet" value="1" <?php if($masjs_characterSet) echo 'checked'; ?>> <?php _e('Yes'); ?> <input type="radio" name="masjs_characterSet" value="0" <?php if(!$masjs_characterSet) echo 'checked'; ?>> <?php _e('No'); ?></td>
           </tr>
           <tr valign="top">
-            <th scope="row"><?php _e('Screen Size', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_screenSize" value="<?php echo $masjs_screenSize; ?>"></td>
+            <th scope="row"><?php _e('Send: Screen Size', 'minimal-analytics'); ?></th>
+            <td scope="row"><input type="radio" name="masjs_screenSize" value="1" <?php if($masjs_screenSize) echo 'checked'; ?>> <?php _e('Yes'); ?> <input type="radio" name="masjs_screenSize" value="0" <?php if(!$masjs_screenSize) echo 'checked'; ?>> <?php _e('No'); ?></td>
           </tr>
           <tr valign="top">
-            <th scope="row"><?php _e('Language', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_language" value="<?php echo $masjs_language; ?>"></td>
+            <th scope="row"><?php _e('Send: Language', 'minimal-analytics'); ?></th>
+            <td scope="row"><input type="radio" name="masjs_language" value="1" <?php if($masjs_language) echo 'checked'; ?>> <?php _e('Yes'); ?> <input type="radio" name="masjs_language" value="0" <?php if(!$masjs_language) echo 'checked'; ?>> <?php _e('No'); ?></td>
           </tr>
         </table>
         <p class="submit">
