@@ -1,15 +1,19 @@
 <?php
 /*
 Plugin Name: Minimal Analytics
-Description: A simple Google Analytics snippet, based on David Kuennen minimal-analytics-snippet.js. Based on 2018-12-16 16:49 version.
+Description: A simple Google Analytics snippet (based on David Kuennen minimal-analytics-snippet.js version 2018-12-16 16:49).
+Tags: google analytics, gtagjs, minimal analytics, wpo
 Version: 1.0.0
+Requires at least: 4.0
+Tested up to: 5.0.2
+Stable tag: 1.0.0
 Author: Javier Casares
 Author URI: https://www.javiercasares.com/
-License: GPLv2 or later
+License: EUPL 1.2
+License URI: https://eupl.eu/1.2/en/
 Text Domain: minimal-analytics
 */
 defined('ABSPATH') or die('Bye bye!');
-
 if ( !class_exists('minimal_analytics_snippet') )
 {
   class minimal_analytics_snippet
@@ -188,7 +192,7 @@ if ( !class_exists('minimal_analytics_snippet') )
 		add_action( 'admin_menu', 'minimal_analytics_snippet_register_menu');
 		function minimal_analytics_snippet_register_menu()
     {
-      add_options_page('Google Analytics', 'Minimal Analytics', 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_code_show');	
+      add_options_page(_('Google Analytics', 'minimal-analytics'), _('Minimal Analytics', 'minimal-analytics'), 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_code_show');	
 		}
 	}
 	function minimal_analytics_snippet_register_meta()
@@ -276,11 +280,11 @@ if ( !class_exists('minimal_analytics_snippet') )
           </tr>
           <tr valign="top">
             <th scope="row"><?php _e('Screen Size', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_screenSize" value="<?php echo get_option('masjs_screenSize'); ?>"></td>
+            <td scope="row"><input type="checkbox" name="masjs_screenSize" value="<?php echo $masjs_screenSize; ?>"></td>
           </tr>
           <tr valign="top">
             <th scope="row"><?php _e('Language', 'minimal-analytics'); ?></th>
-            <td scope="row"><input type="checkbox" name="masjs_language" value="<?php echo get_option('masjs_language'); ?>"></td>
+            <td scope="row"><input type="checkbox" name="masjs_language" value="<?php echo $masjs_language; ?>"></td>
           </tr>
         </table>
         <p class="submit">
