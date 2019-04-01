@@ -4,9 +4,10 @@ Plugin Name: Minimal Analytics
 Plugin URL:  https://www.javiercasares.com/minimal-analytics/
 Description: A simple Google Analytics snippet (based on David Kuennen minimal-analytics-snippet.js version 2018-12-16 16:49).
 Tags: google analytics, gtagjs, minimal analytics, wpo
-Version: 1.0.1
-Requires at least: 4.0
-Tested up to: 5.0.2
+Version: 1.1.0
+Requires at least: 4.9.0
+Requires PHP: 7.0
+Tested up to: 5.2.0
 Stable tag: trunk
 Author: Javier Casares
 Author URI: https://www.javiercasares.com/
@@ -15,196 +16,105 @@ License URI: https://eupl.eu/1.2/en/
 Text Domain: minimal-analytics
 */
 defined('ABSPATH') or die('Bye bye!');
-if ( !class_exists('minimal_analytics_snippet') )
+function minimal_analytics_snippet_code_show()
 {
-  class minimal_analytics_snippet
-  {
-    function minimal_analytics_snippet()
-    {
-      // nothing to do here!
-    }
-    function minimal_analytics_snippet_code_show()
-    {
-      global $post;
-      if( !is_404() )
-      {
-				$ok = false;
-				$masjs_ua = null;
-				$masjs_ua = get_option( 'masjs_ua' );
+	global $post;
+	if( !is_404() )
+	{
+		$ok = false;
+		$masjs_ua = null;
+		$masjs_ua = get_option( 'masjs_ua' );
+		$masjs_anonymizeIp = 'true';
+		switch(get_option( 'masjs_anonymizeIp' )) {
+			case 0:
+				$masjs_anonymizeIp = 'false';
+				break;
+			case 1:
+			default: 
 				$masjs_anonymizeIp = 'true';
-				switch(get_option( 'masjs_anonymizeIp' )) {
-					case 0:
-						$masjs_anonymizeIp = 'false';
-						break;
-					case 1:
-					default: 
-						$masjs_anonymizeIp = 'true';
-						break;
-				}
+				break;
+		}
+		$masjs_colorDepth = 'true';
+		switch(get_option( 'masjs_colorDepth' )) {
+			case 0:
+				$masjs_colorDepth = 'false';
+				break;
+			case 1:
+			default: 
 				$masjs_colorDepth = 'true';
-				switch(get_option( 'masjs_colorDepth' )) {
-					case 0:
-						$masjs_colorDepth = 'false';
-						break;
-					case 1:
-					default: 
-						$masjs_colorDepth = 'true';
-						break;
-				}
+				break;
+		}
+		$masjs_characterSet = 'true';
+		switch(get_option( 'masjs_characterSet' )) {
+			case 0:
+				$masjs_characterSet = 'false';
+				break;
+			case 1:
+			default: 
 				$masjs_characterSet = 'true';
-				switch(get_option( 'masjs_characterSet' )) {
-					case 0:
-						$masjs_characterSet = 'false';
-						break;
-					case 1:
-					default: 
-						$masjs_characterSet = 'true';
-						break;
-				}
+				break;
+		}
+		$masjs_screenSize = 'true';
+		switch(get_option( 'masjs_screenSize' )) {
+			case 0:
+				$masjs_screenSize = 'false';
+				break;
+			case 1:
+			default: 
 				$masjs_screenSize = 'true';
-				switch(get_option( 'masjs_screenSize' )) {
-					case 0:
-						$masjs_screenSize = 'false';
-						break;
-					case 1:
-					default: 
-						$masjs_screenSize = 'true';
-						break;
-				}
+				break;
+		}
+		$masjs_language = 'true';
+		switch(get_option( 'masjs_language' )) {
+			case 0:
+				$masjs_language = 'false';
+				break;
+			case 1:
+			default: 
 				$masjs_language = 'true';
-				switch(get_option( 'masjs_language' )) {
-					case 0:
-						$masjs_language = 'false';
-						break;
-					case 1:
-					default: 
-						$masjs_language = 'true';
-						break;
-				}
-				if($masjs_ua)
-				{
-					$ok = true;
-				}
-        if ( $ok )
-        {
+				break;
+		}
+		if($masjs_ua)
+		{
+			$ok = true;
+		}
+		if ( $ok )
+		{
 ?>
-<script>
-(function (context, trackingId, options) {
-	const history = context.history;
-	const doc = document;
-	const nav = navigator || {};
-	const storage = localStorage;
-	const encode = encodeURIComponent;
-	const pushState = history.pushState;
-	const typeException = 'exception';
-	const generateId = () => Math.random().toString(36);
-	const getId = () => {
-		if (!storage.cid) {
-			storage.cid = generateId()
-		}
-		return storage.cid;
-	};
-	const serialize = (obj) => {
-		var str = [];
-		for (var p in obj) {
-			if (obj.hasOwnProperty(p)) {
-				if(obj[p] !== undefined) {
-					str.push(encode(p) + "=" + encode(obj[p]));
-				}
-			}
-		}
-		return str.join("&");
-	};
-	const track = (
-		type, 
-		eventCategory, 
-		eventAction, 
-		eventLabel, 
-		eventValue, 
-		exceptionDescription, 
-		exceptionFatal
-	) => {
-		const url = 'https://www.google-analytics.com/collect';
-		const data = serialize({
-			v: '1',
-			ds: 'web',
-			aip: options.anonymizeIp ? 1 : undefined,
-			tid: trackingId,
-			cid: getId(),
-			t: type || 'pageview',
-			sd: options.colorDepth && screen.colorDepth ? `${screen.colorDepth}-bits` : undefined,
-			dr: doc.referrer || undefined,
-			dt: doc.title,
-			dl: doc.location.origin + doc.location.pathname + doc.location.search,
-			ul: options.language ? (nav.language || "").toLowerCase() : undefined,
-			de: options.characterSet ? doc.characterSet : undefined,
-			sr: options.screenSize ? `${(context.screen || {}).width}x${(context.screen || {}).height}` : undefined,
-			vp: options.screenSize && context.visualViewport ? `${(context.visualViewport || {}).width}x${(context.visualViewport || {}).height}` : undefined,
-			ec: eventCategory || undefined,
-			ea: eventAction || undefined,
-			el: eventLabel || undefined,
-			ev: eventValue || undefined,
-			exd: exceptionDescription || undefined,
-			exf: typeof exceptionFatal !== 'undefined' && !!exceptionFatal === false ? 0 : undefined,
-		});
-		if(nav.sendBeacon) {
-			nav.sendBeacon(url, data)
-		} else {
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", url, true);
-			xhr.send(data);
-		}
-	};
-	const trackEvent = (category, action, label, value) => track('event', category, action, label, value);
-	const trackException = (description, fatal) => track(typeException, null, null, null, null, description, fatal);
-	history.pushState = function (state) {
-		if (typeof history.onpushstate == 'function') {
-			history.onpushstate({ state: state });
-		}
-		setTimeout(track, options.delay || 10);
-		return pushState.apply(history, arguments);
-	}
-	track();
-	context.ma = {
-		trackEvent,
-		trackException
-	}
-})(window, '<?php echo wp_kses($masjs_ua, array(), array()); ?>', {
-	anonymizeIp: <?php echo $masjs_anonymizeIp; ?>,
-	colorDepth: <?php echo $masjs_colorDepth; ?>,
-	characterSet: <?php echo $masjs_characterSet; ?>,
-	screenSize: <?php echo $masjs_screenSize; ?>,
-	language: <?php echo $masjs_language; ?>
-});
-</script>
+<script>(function(a,b,c){var d=a.history,e=document,f=navigator||{},g=localStorage,h=encodeURIComponent,i=d.pushState,k=function(){return Math.random().toString(36)},l=function(){return g.cid||(g.cid=k()),g.cid},m=function(r){var s=[];for(var t in r)r.hasOwnProperty(t)&&void 0!==r[t]&&s.push(h(t)+"="+h(r[t]));return s.join("&")},n=function(r,s,t,u,v,w,x){var z="https://www.google-analytics.com/collect",A=m({v:"1",ds:"web",aip:c.anonymizeIp?1:void 0,tid:b,cid:l(),t:r||"pageview",sd:c.colorDepth&&screen.colorDepth?screen.colorDepth+"-bits":void 0,dr:e.referrer||void 0,dt:e.title,dl:e.location.origin+e.location.pathname+e.location.search,ul:c.language?(f.language||"").toLowerCase():void 0,de:c.characterSet?e.characterSet:void 0,sr:c.screenSize?(a.screen||{}).width+"x"+(a.screen||{}).height:void 0,vp:c.screenSize&&a.visualViewport?(a.visualViewport||{}).width+"x"+(a.visualViewport||{}).height:void 0,ec:s||void 0,ea:t||void 0,el:u||void 0,ev:v||void 0,exd:w||void 0,exf:"undefined"!=typeof x&&!1==!!x?0:void 0});if(f.sendBeacon)f.sendBeacon(z,A);else{var y=new XMLHttpRequest;y.open("POST",z,!0),y.send(A)}};d.pushState=function(r){return"function"==typeof d.onpushstate&&d.onpushstate({state:r}),setTimeout(n,c.delay||10),i.apply(d,arguments)},n(),a.ma={trackEvent:function o(r,s,t,u){return n("event",r,s,t,u)},trackException:function q(r,s){return n("exception",null,null,null,null,r,s)}}})(window,"<?php echo wp_kses($masjs_ua, array(), array()); ?>",{anonymizeIp:<?php echo $masjs_anonymizeIp; ?>,colorDepth:<?php echo $masjs_colorDepth; ?>,characterSet:<?php echo $masjs_characterSet; ?>,screenSize:<?php echo $masjs_screenSize; ?>,language:<?php echo $masjs_language; ?>});</script>
 <?php
-					unset($ok, $masjs_ua, $masjs_anonymizeIp, $masjs_colorDepth, $masjs_characterSet, $masjs_screenSize, $masjs_language);
-				}
-			}
+			unset($ok, $masjs_ua, $masjs_anonymizeIp, $masjs_colorDepth, $masjs_characterSet, $masjs_screenSize, $masjs_language);
 		}
 	}
-	$minimal_analytics_snippet_meta = new minimal_analytics_snippet();
-	if (isset($minimal_analytics_snippet_meta))
-  {
-		add_action( 'wp_head', array(&$minimal_analytics_snippet_meta, 'minimal_analytics_snippet_code_show' ) );
-		add_action( 'admin_init', 'minimal_analytics_snippet_register_meta' );
-		add_action( 'admin_menu', 'minimal_analytics_snippet_register_menu');
-		function minimal_analytics_snippet_register_menu()
-    {
-      add_options_page(__('Google Analytics', 'minimal-analytics'), __('Minimal Analytics', 'minimal-analytics'), 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_admin');	
-		}
-	}
-	function minimal_analytics_snippet_register_meta()
-	{
-    register_setting( 'masjs', 'masjs_ua', array('type' => 'string', 'default' => null) );
-    register_setting( 'masjs', 'masjs_anonymizeIp', array('type' => 'integer', 'default' => 1) );
-    register_setting( 'masjs', 'masjs_colorDepth', array('type' => 'integer', 'default' => 1) );
-    register_setting( 'masjs', 'masjs_characterSet', array('type' => 'integer', 'default' => 1) );
-    register_setting( 'masjs', 'masjs_screenSize', array('type' => 'integer', 'default' => 1) );
-    register_setting( 'masjs', 'masjs_language', array('type' => 'integer', 'default' => 1) );
-	}
-	function minimal_analytics_snippet_admin()
-	{
+}
+add_action( 'wp_head', 'minimal_analytics_snippet_code_show' );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'minimal_analytics_snippet_settings_link' );
+add_action( 'admin_init', 'minimal_analytics_snippet_register_meta' );
+add_action( 'admin_menu', 'minimal_analytics_snippet_register_menu');
+function minimal_analytics_snippet_register_menu()
+{
+	add_options_page(__('Google Analytics', 'minimal-analytics'), __('Minimal Analytics', 'minimal-analytics'), 'manage_options', 'minimal_analytics_snippet', 'minimal_analytics_snippet_admin');	
+}
+add_action( 'plugins_loaded', 'minimal_analytics_snippet_textdomain' );	
+function minimal_analytics_snippet_textdomain() {
+	load_plugin_textdomain( 'minimal-analytics', false, basename( dirname( __FILE__ ) ) . '/languages' );
+}
+function minimal_analytics_snippet_settings_link( $links )
+{
+	$links[] = '<a href="' . get_admin_url( null, 'options-general.php?page=minimal_analytics_snippet' ) . '">' . _('Settings') . '</a>';
+	return $links;
+}
+function minimal_analytics_snippet_register_meta()
+{
+	register_setting( 'masjs', 'masjs_ua', array('type' => 'string', 'default' => null) );
+	register_setting( 'masjs', 'masjs_anonymizeIp', array('type' => 'integer', 'default' => 1) );
+	register_setting( 'masjs', 'masjs_colorDepth', array('type' => 'integer', 'default' => 1) );
+	register_setting( 'masjs', 'masjs_characterSet', array('type' => 'integer', 'default' => 1) );
+	register_setting( 'masjs', 'masjs_screenSize', array('type' => 'integer', 'default' => 1) );
+	register_setting( 'masjs', 'masjs_language', array('type' => 'integer', 'default' => 1) );
+}
+function minimal_analytics_snippet_admin()
+{
 ?>
 		<div class="wrap">
       <h2><?php _e('Minimal Analytics Snippet', 'minimal-analytics'); ?></h2>
@@ -297,6 +207,5 @@ if ( !class_exists('minimal_analytics_snippet') )
       </form>
 		</div>
 <?php
-		unset($masjs_ua, $masjs_anonymizeIp, $masjs_colorDepth, $masjs_characterSet, $masjs_screenSize, $masjs_language);
-  }
+	unset($masjs_ua, $masjs_anonymizeIp, $masjs_colorDepth, $masjs_characterSet, $masjs_screenSize, $masjs_language);
 }

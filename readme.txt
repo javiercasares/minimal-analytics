@@ -1,10 +1,10 @@
 === Minimal Analytics ===
 Contributors: JavierCasares
 Tags: google analytics, gtagjs, minimal analytics, wpo
-Version: 1.0.1
-Requires at least: 4.0
-Tested up to: 5.0.2
-Requires PHP: 5.6
+Version: 1.1.0
+Requires at least: 4.9.0
+Requires PHP: 7.0
+Tested up to: 5.2.0
 Stable tag: trunk
 License: EUPL 1.2
 License URI: https://eupl.eu/1.2/en/
@@ -16,14 +16,6 @@ A simple Google Analytics snippet (based on David Kuennen minimal-analytics-snip
 
 This plugins only allows Pageviews, Events and Exceptions.
 
-To track an Event:
-
-`ma.trackEvent('Category', 'Action', 'Label', 'Value')`
-
-To track an Exception:
-
-`ma.trackException('Description', 'Fatal')`
-
 == Installation ==
 1. Use the Add New Plugin in the WordPress Admin area
 2. Activate the plugin through the \'Plugins\' menu in WordPress
@@ -32,9 +24,10 @@ To track an Exception:
 == Screenshots ==
 1. screenshot-1.png
 
-== Changelog ==
-= 1.0.1 (2018-12-27) =
-* Minimal fixes
+= 1.1.0 (2019-04-01) =
+* Compatibility for WordPress 5.2
+* Minified JavaScript code
 
-= 1.0.0 (2018-12-27) =
-* First version
+== Changelog ==
+= 1.0.3 (2019-01-11) =
+* Internationalization support
