@@ -5,9 +5,9 @@ Plugin URL:  https://www.javiercasares.com/minimal-analytics/
 Description: A simple Google Analytics snippet (based on David Kuennen minimal-analytics-snippet.js version 2018-12-16 16:49).
 Tags: google analytics, gtagjs, minimal analytics, wpo
 Version: 1.1.0
-Requires at least: 4.9.0
-Requires PHP: 7.0
-Tested up to: 5.2.0
+Requires at least: 4.9
+Requires PHP: 5.6
+Tested up to: 5.2
 Stable tag: trunk
 Author: Javier Casares
 Author URI: https://www.javiercasares.com/

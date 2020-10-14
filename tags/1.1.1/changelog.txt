@@ -1,0 +1,20 @@
+== Changelog ==
+
+= 1.1.1 (2019-11-02) =
+* Compatibility for WordPress 5.3
+
+= 1.1.0 (2019-04-01) =
+* Compatibility for WordPress 5.2
+* Minified JavaScript code
+
+= 1.0.3 (2019-01-11) =
+* Internationalization support
+
+= 1.0.2 (2019-01-05) =
+* Add settings link
+
+= 1.0.1 (2018-12-27) =
+* Minimal fixes
+
+= 1.0.0 (2018-12-27) =
+* First version
