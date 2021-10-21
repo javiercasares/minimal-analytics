@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Minimal Analytics
-Plugin URI: https://wordpress.org/plugins/minimal-analytics/
+Plugin URI:  https://www.javiercasares.com/minimal-analytics/
 Description: A simple Google Analytics snippet, based on David Kuennen Minimal Analytics (version 2018-12-16 16:49).
-Version: 1.1.7
+Version: 1.1.6
 Requires at least: 4.9
 Tested: 5.8
 Requires PHP: 7.0

@@ -1,8 +1,5 @@
 == Changelog ==
 
-= 1.1.7 (2021-07-03) =
-* Update the Plugin URI for WordPress 5.8
-
 = 1.1.6 (2021-06-23) =
 * Compatibility: WordPress 5.8
 

@@ -5,7 +5,7 @@ Requires at least: 4.9
 Tested: 5.8
 Requires PHP: 7.0
 Tested PHP: 8.0
-Stable tag: 1.1.7
+Stable tag: 1.1.6
 License: EUPL 1.2
 License URI: https://eupl.eu/1.2/en/
 
@@ -29,11 +29,8 @@ Not compatible with Google Analytics 4.
 
 == Changelog ==
 
-= 1.1.7 (2021-07-03) =
-* Update the Plugin URI for WordPress 5.8
-
 = 1.1.6 (2021-06-23) =
-* Compatibility: WordPress 5.8
+* Compatibility: WordPress 5.7
 
 = 1.1.5 (2021-02-14) =
 * Compatibility: WordPress 5.7
