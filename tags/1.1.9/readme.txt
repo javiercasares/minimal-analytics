@@ -29,24 +29,45 @@ Not compatible with Google Analytics 4.
 
 == Changelog ==
 
-= 1.1.9 =
-* 2022-05-06
-* Compatibility: WordPress 4.9 - WordPress 6.0
-* Compatibility: PHP 5.6.20 - PHP 8.1
-
-= 1.1.8 =
-* 2021-11-05
+= 1.1.8 (2021-11-05) =
 * Compatibility: WordPress 4.9 - WordPress 5.9
 * Compatibility: PHP 5.6.20 - PHP 8.1
 
-= 1.1.7 =
-* 2021-07-03
+= 1.1.7 (2021-07-03) =
 * Update the Plugin URI for WordPress 5.8
 
-= 1.1.6 =
-* 2021-06-23
+= 1.1.6 (2021-06-23) =
 * Compatibility: WordPress 5.8
 
-= 1.1.5 =
-* 2021-02-14
+= 1.1.5 (2021-02-14) =
 * Compatibility: WordPress 5.7
+
+= 1.1.4 (2020-11-30) =
+* Compatibility: WordPress 5.6
+* Compatibility: PHP 8.0
+
+= 1.1.3 (2020-07-22) =
+* Compatibility: WordPress 5.5
+
+= 1.1.2 (2020-02-22) =
+* Compatibility: WordPress 5.4
+* Design optimized
+
+= 1.1.1 (2019-11-02) =
+* Compatibility: WordPress 5.3
+
+= 1.1.0 (2019-04-01) =
+* Compatibility: WordPress 5.2
+* Minified JavaScript code
+
+= 1.0.3 (2019-01-11) =
+* Internationalization support
+
+= 1.0.2 (2019-01-05) =
+* Add settings link
+
+= 1.0.1 (2018-12-27) =
+* Minimal fixes
+
+= 1.0.0 (2018-12-27) =
+* First version
